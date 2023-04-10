@@ -9,6 +9,8 @@ services:
     stop_signal: SIGINT
     ports:
       - '8000:8000'
+    volumes:
+      - ./app:/app
 # Using 2.0 https://hub.docker.com/_/influxdb
   influxdb: 
     image: influxdb
