@@ -1,13 +1,14 @@
 version: '3.8'
 services:
-  nodered:
-    image: nodered/node-red
+  web: 
+    build:
+      context: app
+      target: builder
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
     ports:
-      - "1880:1880"
-    volumes:
-      - ./nodered:/data
-    restart: always
-
+      - '8000:8000'
 # Using 2.0 https://hub.docker.com/_/influxdb
   influxdb: 
     image: influxdb
@@ -23,6 +24,15 @@ services:
       - ./influxdb/data:/var/lib/influxdb2
       - ./influxdb/config:/etc/influxdb2
     restart: always
+
+  telegraf:
+    image: telegraf
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
 
   grafana:
     image: grafana/grafana

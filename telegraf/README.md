@@ -1,0 +1,1 @@
+Thanks to https://github.com/mcicolella/influxdata-examples/blob/master/telegraf/telegraf-snmp/telegraf.conf
