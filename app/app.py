@@ -1,27 +1,18 @@
 from flask import Flask, render_template, request
 app = Flask(__name__)
+from query import *
 
-# Influx DB
-import influxdb_client, os, time
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
+# Thanks to https://stackoverflow.com/questions/46482475/how-handle-a-button-click-on-python-flask
 
-token = os.environ.get("INFLUXDB_TOKEN")
-org = "dimes"
-url = "http://localhost:8086"
-
-write_client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
-
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-
-@app.route('/button', methods=['POST'])
-def button():
-    print("Hello world")
-    return 'Button clicked!'
+ButtonPressed = 0
+        
+@app.route('/', methods=["GET", "POST"])
+def button( ButtonPressed = 0 ):
+    if request.method == "POST":
+        # Put Influx Requests here when ready 
+        ButtonPressed += 1 # Note this increment here
+        return render_template("index.html", ButtonPressed = ButtonPressed)
+    return render_template("index.html", ButtonPressed = ButtonPressed)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8000)
