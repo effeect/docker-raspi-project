@@ -1,3 +1,5 @@
 flask
 influxdb-client
 requests
+schedule
+apscheduler
