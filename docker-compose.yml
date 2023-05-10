@@ -11,6 +11,20 @@ services:
       - '8000:8000'
     volumes:
       - ./app:/app
+
+  # To process Data in Python
+  process:
+    build:
+      context: process
+      target: builder
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
+    ports:
+      - '1990:1990'
+    volumes:
+      - ./process:/app
+
 # Using 2.0 https://hub.docker.com/_/influxdb
   influxdb: 
     image: influxdb
